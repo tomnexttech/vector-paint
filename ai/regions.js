@@ -270,5 +270,19 @@
     return { width: res.w, height: res.h, data: out };
   }
 
-  return { extract: extract, idMap: idMap, idColor: idColor, defaults: DEFAULTS, _rank: rank, _lumOf: lumOf };
+  /** 領域ごとに、境界と線から一番遠い点（文字を置く所）と、その距離を求める。距離は 1・√2 の面取り距離。 */
+  function anchors(res) {
+    var W = res.w, H = res.h, n = W * H, lab = res.labels, ink = res.ink, D = new Float32Array(n), R2 = Math.SQRT2, i, x, y, l;
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      i = y * W + x; l = lab[i];
+      D[i] = (ink && ink[i]) || x === 0 || y === 0 || x === W - 1 || y === H - 1 || lab[i - 1] !== l || lab[i + 1] !== l || lab[i - W] !== l || lab[i + W] !== l ? 0 : 1e9;
+    }
+    for (y = 1; y < H - 1; y++) for (x = 1; x < W - 1; x++) { i = y * W + x; if (D[i]) D[i] = Math.min(D[i], D[i - 1] + 1, D[i - W] + 1, D[i - W - 1] + R2, D[i - W + 1] + R2); }
+    for (y = H - 2; y > 0; y--) for (x = W - 2; x > 0; x--) { i = y * W + x; if (D[i]) D[i] = Math.min(D[i], D[i + 1] + 1, D[i + W] + 1, D[i + W + 1] + R2, D[i + W - 1] + R2); }
+    var ax = new Int32Array(res.n), ay = new Int32Array(res.n), ad = new Float32Array(res.n);
+    for (i = 0; i < n; i++) { l = lab[i]; if (D[i] > ad[l]) { ad[l] = D[i]; ax[l] = i % W; ay[l] = (i / W) | 0; } }
+    return { x: ax, y: ay, d: ad };
+  }
+
+  return { extract: extract, idMap: idMap, idColor: idColor, anchors: anchors, defaults: DEFAULTS, _rank: rank, _lumOf: lumOf };
 });

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="connect-src 'self' data: blob: https://generativelanguage.googleapis.com https://api.openai.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>VECTOR PAINT</title>
 <link rel="stylesheet" href="paint/paint.css">
 <link rel="stylesheet" href="vector-paint.css">
@@ -66,16 +67,37 @@
     <label>判定の方式 <select id="vp-labeler"></select></label>
     <label>未判定のしきい値 <input id="vp-thr" type="range" min="5" max="70" value="30"><output id="vp-thr-v">0.30</output></label>
   </div>
+  <div id="vp-byok" class="vp-byok" hidden>
+    <div class="vp-row">
+      <label>提供元 <select id="vp-prov"></select></label>
+      <label>モデル名 <input id="vp-model" type="text" spellcheck="false" autocomplete="off"></label>
+    </div>
+    <div class="vp-row">
+      <label>キー <input id="vp-key" type="password" spellcheck="false" autocomplete="off" placeholder="ここに貼り付け"></label>
+    </div>
+    <div class="vp-row">
+      <label class="vp-chk"><input id="vp-remember" type="checkbox"> このタブを閉じるまで覚える</label>
+      <button id="vp-ai" type="button">AI で判定</button>
+    </div>
+    <div class="vp-note">鍵は選んだ提供元へ直接送られます。VECTOR のサーバーは通りません。</div>
+    <div class="vp-note">送るのは、番号を書き込んだ線画と領域の表だけです。「AI で判定」を押したときだけ送ります。</div>
+    <div class="vp-note">キーの発行: <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Gemini</a> / <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">OpenAI</a></div>
+  </div>
+  <div id="vp-ainote" class="vp-ainote" role="status" aria-live="polite"></div>
   <div class="vp-row">
     <button id="vp-run" type="button">自動分類</button>
     <button id="vp-reset" type="button">修正を戻す</button>
+  </div>
+  <div class="vp-row">
     <button id="vp-export" type="button">判定の PNG を書き出す</button>
+    <button id="vp-mask" type="button">面ごとの PSD を書き出す</button>
   </div>
   <div id="vp-legend" class="vp-legend"></div>
+  <div id="vp-src" class="vp-src" aria-live="polite"></div>
   <div id="vp-at" class="vp-at" aria-live="polite"></div>
   <div id="vp-hint" class="vp-hint">修正: 左の「魔法の杖」で領域を選び、上の種類を押す。手で直した領域には * が付きます。</div>
   <div id="vp-msg" class="vp-msg" role="status"></div>
-  <div class="vp-foot">線画の各面が何か（壁・ガラス・地面など）を判定して示します。色は付けません。規則ベースの判定で、学習モデルではありません。この端末内で完結し、通信しません。 VECTOR</div>
+  <div class="vp-foot">線画の各面が何か（壁・ガラス・地面など）を判定して示します。色は付けません。既定は規則ベースの判定で、この端末内で完結し、通信しません。「自分のキーで AI 判定」を選んで「AI で判定」を押したときだけ、入れたキーで選んだ提供元（Gemini または OpenAI）へ、番号を書き込んだ線画を送ります。 VECTOR</div>
 </section>
 
 <input id="f-image" type="file" accept="image/*" class="hide">
@@ -90,6 +112,7 @@
 <script src="ai/regions.js"></script>
 <script src="ai/classify.js"></script>
 <script src="ai/labeler.js"></script>
+<script src="ai/maskpsd.js"></script>
 <script src="samples-data.js"></script>
 <script src="vector-paint.js"></script>
 </body>
