@@ -1,0 +1,33 @@
+zumen-kit paint  (ui/paint)  素材・出典・再配布の可否
+
+1. プログラム
+   core.js / psd.js / i18n.js / ui.js / paint.css / index.html / tools/ / tests/ はこのプロジェクトで書いた物。
+   外部ライブラリ・外部 CDN・ネットワーク呼び出しは使っていない。第三者のコードを含まない。
+
+2. 素材（コンクリート・木・レンガ・タイル・石・草・水・ガラス・金属・漆喰・アスファルト・砂利・グラデーション・単色）
+   すべて core.js の中の式（ノイズ・幾何・色の計算）が実行時に生成する。画像ファイル・写真・第三者のテクスチャは同梱していない。
+   出典: なし（自作の計算）。再配布: 可（このプロジェクトの配布条件に従う）。
+
+3. 見本（samples/clay_*.png と sample-data.js）
+   架空の粘土模型の建物。samples/make_samples.mjs が計算だけで描く。実在の建物・写真・人物・商標を含まない。
+   出典: 自作の台本。再配布: 可。
+
+4. アイコン（assets/zumen-paint.ico, assets/zumen-paint-256.png）
+   tools/make_icon.mjs が計算だけで描く。第三者の画像・ロゴを含まない。再配布: 可。
+
+5. 書体
+   書体は同梱しない。利用者の機にある書体（既定は Bahnschrift、無ければ Segoe UI など）を名前で指定して使う。
+   利用者が取り込む画像・テクスチャ・書体の権利は利用者の側にある。
+
+6. 個人情報・鍵・商標
+   配布物に、個人情報・API キー・個人の記憶庫の中身・第三者の商標や作品名を含めない。
+   AI 推論は使わない（Claude の定額枠・外部 API のいずれも呼ばない）。
+
+7. 図面の自動着彩（assets.js の素材。tools/make_assets.py で作る）
+   concrete / planks : Poly Haven の CC0 テクスチャ（concrete_diff_2k.jpg / dark_planks_diff_2k.jpg）を縮小して JPEG にした物。CC0。
+   walk_m / walk_w / stand_m : CC0 の人の影絵（Wikimedia Commons。Mette Aumala 氏の作の CC0 版）を黒一色の影絵にした物。
+   oak : CC0 の樫の木の SVG（freesvg 系）から、輪郭の影絵を作った物。
+   木の「写真の質の既定素材」は同梱していない。立面・断面の樹木は輪郭の影絵を明度で塗った簡易な物。写真の木を使うときは、利用者が切り抜き PNG を取り込む。
+   同梱しない物: 第三者の有償・再配布不可の樹木記号集とテクスチャ集。利用者が自分で持つ素材を取り込む入口だけを持つ。
+   見本の図面: 架空の「川辺の小さな図書室」の平面・立面・断面（tools/make_sample_lib.py で sample-data.js にする）。実在の建物・人物・学校の資料は含まない。
+   AI 推論・通信は使わない。計算はすべてブラウザの中。
