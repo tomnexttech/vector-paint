@@ -24,4 +24,17 @@
 .vp-hint, .vp-foot { opacity: .72; font-size: 11px; }
 .vp-msg { min-height: 1.5em; margin-top: 4px; }
 .vp-msg.err { color: #c62828; }
-@media (max-width: 760px) { #vp { left: 6px; top: 46px; width: calc(100vw - 12px); } }
+/* スマホ: 上 58% に図面（ツール列＋画面）、下 42% に判定の盤。着彩の細かい設定（右の列）は PC で。 */
+@media (max-width: 760px) {
+  #app { grid-template-columns: 46px 1fr; height: 58vh; height: 58dvh; }
+  #top, #status { grid-column: 1 / -1; }
+  #top { gap: 10px; padding: 0 8px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  #top::after { display: none; }
+  #top .brand, #top .grp { flex: none; }
+  #top button { white-space: nowrap; }
+  #top .grp + .grp { padding-left: 10px; }
+  #tools { overflow-y: auto; padding-top: 6px; gap: 4px; }
+  #tools button { width: 36px; height: 36px; }
+  #side { display: none; }
+  #vp { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: 42vh; height: 42dvh; max-height: none; border-width: 1px 0 0; box-shadow: 0 -2px 10px rgba(0,0,0,.12); }
+}
